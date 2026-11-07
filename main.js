@@ -24,7 +24,8 @@
     start: $('screen-start'),
     question: $('screen-question'),
     result: $('screen-result'),
-    teacher: $('screen-teacher')
+    teacher: $('screen-teacher'),
+    lock: $('screen-lock')
   };
 
   function esc(s) {
@@ -397,12 +398,50 @@
     });
   }
 
+  /* ───────── 강사용 잠금 (간단 잠금 · 해제 상태는 저장하지 않음) ───────── */
+  function setupTeacherLock() {
+    var cfg = window.YMS_TEACHER_CONFIG || {};
+    var fails = 0, lockedUntil = 0;
+    var input = $('lock-input'), err = $('lock-error'), btn = $('lock-submit');
+    show('lock');
+    input.focus();
+
+    function showError(msg) { err.textContent = msg; err.hidden = false; }
+
+    $('lock-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var now = Date.now();
+      if (now < lockedUntil) {
+        showError(Math.ceil((lockedUntil - now) / 1000) + '초 뒤에 다시 시도해 주세요.');
+        return;
+      }
+      if (!cfg.passHash) { showError('강사 비밀번호가 설정되지 않았어요. README의 비밀번호 설정 방법을 확인해 주세요.'); return; }
+      if (YMS.teacherLock.check(input.value, cfg.passHash)) {
+        input.value = '';
+        renderTeacher();
+        show('teacher');
+        return;
+      }
+      fails++;
+      input.value = '';
+      if (fails >= 5) {
+        fails = 0;
+        lockedUntil = now + 30000;
+        btn.disabled = true;
+        setTimeout(function () { btn.disabled = false; err.hidden = true; }, 30000);
+        showError('비밀번호가 5번 틀렸어요. 30초 뒤에 다시 시도해 주세요.');
+      } else {
+        showError('비밀번호가 맞지 않아요.');
+      }
+      input.focus();
+    });
+  }
+
   /* ───────── 시작 ───────── */
   var params = new URLSearchParams(location.search);
   if (params.get('mode') === 'teacher') {
     document.title = '강사용 미리보기 | 내 상황에 맞는 돈관리 스타일 찾기';
-    renderTeacher();
-    show('teacher');
+    setupTeacherLock();
   } else {
     go({ screen: 'start' }, true);
   }

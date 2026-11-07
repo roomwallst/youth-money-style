@@ -37,7 +37,6 @@
       <div class="start-footer">
         <button type="button" class="btn btn-primary btn-block" id="btn-start">진단 시작하기</button>
         <p class="privacy-note">이름·연락처를 묻지 않아요. 응답은 이 기기 안에서만 처리되고 어디에도 전송되지 않아요.</p>
-        <a class="teacher-link" href="?mode=teacher">강사용 미리보기</a>
       </div>
     </section>
 
@@ -75,6 +74,20 @@
         <button type="button" class="btn btn-primary btn-block" id="btn-save">결과 이미지 저장</button>
         <button type="button" class="btn btn-outline btn-block" id="btn-restart">다시 진단하기</button>
       </div>
+    </section>
+
+    <!-- ───────── 강사용 잠금 ───────── -->
+    <section class="screen screen-lock" id="screen-lock" hidden aria-labelledby="lock-title">
+      <header class="brand-bar"><span class="brand-name">방구석월가</span><span class="brand-sep" aria-hidden="true">|</span><span>강사용</span></header>
+      <form class="lock-box" id="lock-form" autocomplete="off">
+        <h1 id="lock-title">강사용 미리보기</h1>
+        <p>강사 비밀번호를 입력해 주세요.</p>
+        <label class="sr-only" for="lock-input">강사 비밀번호</label>
+        <input type="password" id="lock-input" class="lock-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="비밀번호" required>
+        <p class="lock-error" id="lock-error" role="alert" hidden></p>
+        <button type="submit" class="btn btn-primary btn-block" id="lock-submit">열기</button>
+        <a class="btn-text lock-back" href="./">수강생 화면으로 이동</a>
+      </form>
     </section>
 
     <!-- ───────── 강사용 미리보기 ───────── -->
@@ -119,6 +132,8 @@
   <script src="scoring.js"></script>
   <script src="results.js"></script>
   <script src="card.js"></script>
+  <script src="teacher-lock.js"></script>
+  <script src="teacher-config.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

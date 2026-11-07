@@ -72,6 +72,7 @@ async function noHorizontalScroll(page) {
       await page.evaluate(() => document.fonts.ready);
 
       await check('시작 화면 표시', async () => {
+        assert.equal(await page.locator('a[href*="mode=teacher"]').count(), 0, '시작 화면에 강사용 링크가 없어야 함');
         assert.equal(await page.textContent('#start-title'), '내 상황에 맞는돈관리 스타일 찾기');
         assert.ok(await page.isVisible('#btn-start'));
         await noHorizontalScroll(page);
@@ -237,7 +238,25 @@ async function noHorizontalScroll(page) {
     {
       const ctx = await browser.newContext({ viewport: { width: 1920, height: 1080 }, acceptDownloads: true });
       const page = await ctx.newPage();
+      const { hashPassword } = require('../teacher-lock.js');
+      await page.route('**/teacher-config.js', (route) => route.fulfill({
+        contentType: 'text/javascript',
+        body: "window.YMS_TEACHER_CONFIG = { passHash: '" + hashPassword('test-pass-1234') + "' };"
+      }));
       await page.goto(BASE + '?mode=teacher');
+      await check('강사용 잠금: 비밀번호 없이는 열리지 않음', async () => {
+        assert.ok(await page.isVisible('#screen-lock'));
+        assert.ok(!(await page.isVisible('#screen-teacher')));
+        assert.equal(await page.locator('#tab-questions .t-q').count(), 0, '잠금 상태에서 내용이 그려지면 안 됨');
+        await page.fill('#lock-input', 'wrong');
+        await page.click('#lock-submit');
+        assert.ok((await page.textContent('#lock-error')).includes('맞지 않아요'));
+        assert.ok(!(await page.isVisible('#screen-teacher')));
+        await page.screenshot({ path: path.join(SHOTS, 'teacher-lock.png') });
+        await page.fill('#lock-input', 'test-pass-1234');
+        await page.click('#lock-submit');
+        assert.ok(await page.isVisible('#screen-teacher'));
+      });
       await check('질문 15개 / 유형 5개 / 분류 기준', async () => {
         assert.equal(await page.locator('#tab-questions .t-q').count(), 15);
         assert.equal(await page.locator('#tab-questions .t-q li').count(), 60);

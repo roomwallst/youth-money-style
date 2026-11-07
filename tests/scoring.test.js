@@ -390,3 +390,23 @@ test('유형 간 우열 표현이 없다', () => {
   texts.push(...Object.values(results.ASSET_REASON));
   texts.forEach((s) => assert.ok(!ranking.test(s), '우열 표현: ' + s));
 });
+
+/* ───── 강사용 잠금 ───── */
+test('강사용 잠금: SHA-256 구현이 표준과 같고, 맞는/틀린 비밀번호를 구분한다', () => {
+  const lock = require('../teacher-lock.js');
+  const crypto = require('node:crypto');
+  for (const s of ['', 'abc', '한글 비밀번호', 'x'.repeat(300)]) {
+    assert.equal(lock.sha256(s), crypto.createHash('sha256').update(s, 'utf8').digest('hex'));
+  }
+  const h = lock.hashPassword('bangu2026');
+  assert.equal(lock.check('bangu2026', h), true);
+  assert.equal(lock.check(' bangu2026 ', h), true);
+  assert.equal(lock.check('bangu2027', h), false);
+  assert.equal(lock.check('bangu2026', ''), false);
+});
+
+test('teacher-config.js 에는 비밀번호 원문이 아닌 64자리 해시만 있다', () => {
+  const src = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'teacher-config.js'), 'utf8');
+  const m = src.match(/passHash:\s*'([0-9a-f]+)'/);
+  assert.ok(m && m[1].length === 64);
+});
