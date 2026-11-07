@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#14213D">
+  <meta name="description" content="15개의 질문으로 알아보는 나의 금융생활 유형 — 방구석월가 청년 금융교육">
+  <meta name="robots" content="noindex">
+  <title>내 상황에 맞는 돈관리 스타일 찾기 | 방구석월가</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app" id="app">
+
+    <!-- ───────── 시작 화면 ───────── -->
+    <section class="screen screen-start" id="screen-start" aria-labelledby="start-title">
+      <header class="brand-bar"><span class="brand-name">방구석월가</span><span class="brand-sep" aria-hidden="true">|</span><span>청년 금융교육</span></header>
+
+      <div class="start-body">
+        <p class="eyebrow">MY MONEY STYLE</p>
+        <h1 id="start-title" class="start-title">내 상황에 맞는<br>돈관리 스타일 찾기</h1>
+        <p class="start-sub">15개의 질문으로 알아보는 나의 금융생활 유형</p>
+
+        <ul class="meta-chips" aria-label="진단 정보">
+          <li><strong>15</strong>문항</li>
+          <li>약 <strong>3~5</strong>분</li>
+          <li><strong>익명</strong> 참여</li>
+        </ul>
+
+        <div class="start-card">
+          <p>돈을 많이 가지고 있어야 할 필요는 없어요.<br>지금 내 상황에서 시작할 수 있는<br>돈관리 방법을 함께 찾아볼까요?</p>
+          <hr>
+          <p class="muted">정답이나 오답은 없습니다.<br>현재 나에게 가장 가까운 답을 선택하세요.</p>
+        </div>
+      </div>
+
+      <div class="start-footer">
+        <button type="button" class="btn btn-primary btn-block" id="btn-start">진단 시작하기</button>
+        <p class="privacy-note">이름·연락처를 묻지 않아요. 응답은 이 기기 안에서만 처리되고 어디에도 전송되지 않아요.</p>
+        <a class="teacher-link" href="?mode=teacher">강사용 미리보기</a>
+      </div>
+    </section>
+
+    <!-- ───────── 질문 화면 ───────── -->
+    <section class="screen screen-question" id="screen-question" hidden>
+      <header class="q-top">
+        <div class="q-top-row">
+          <button type="button" class="btn-text" id="btn-prev" aria-label="이전 질문으로">‹ 이전</button>
+          <span class="q-progress-text" id="q-progress-text" aria-live="polite">1 / 15</span>
+        </div>
+        <div class="progress" role="progressbar" aria-label="진행률" aria-valuemin="0" aria-valuemax="15" aria-valuenow="1" id="q-progressbar">
+          <div class="progress-fill" id="q-progress-fill"></div>
+        </div>
+      </header>
+
+      <div class="q-body">
+        <p class="q-number" id="q-number">Q1</p>
+        <h2 class="q-text" id="q-text" tabindex="-1"></h2>
+        <p class="q-hint" id="q-hint" hidden></p>
+        <div class="options" id="q-options" role="radiogroup" aria-labelledby="q-text"></div>
+        <button type="button" class="btn-skip" id="btn-skip" hidden>답변하고 싶지 않아요</button>
+        <p class="q-skipped" id="q-skipped" hidden>이 문항은 건너뛰었어요. 원하면 답을 골라도 괜찮아요.</p>
+      </div>
+
+      <footer class="q-footer">
+        <p class="q-guide">정답은 없어요. 나에게 가까운 답을 골라주세요.</p>
+        <button type="button" class="btn btn-primary btn-block" id="btn-next" disabled>다음</button>
+      </footer>
+    </section>
+
+    <!-- ───────── 결과 화면 ───────── -->
+    <section class="screen screen-result" id="screen-result" hidden aria-labelledby="r-name">
+      <div id="result-root"></div>
+      <div class="result-buttons">
+        <button type="button" class="btn btn-primary btn-block" id="btn-save">결과 이미지 저장</button>
+        <button type="button" class="btn btn-outline btn-block" id="btn-restart">다시 진단하기</button>
+      </div>
+    </section>
+
+    <!-- ───────── 강사용 미리보기 ───────── -->
+    <section class="screen screen-teacher" id="screen-teacher" hidden>
+      <header class="brand-bar"><span class="brand-name">방구석월가</span><span class="brand-sep" aria-hidden="true">|</span><span>강사용 미리보기</span></header>
+      <div class="teacher-intro">
+        <h1>강사용 미리보기</h1>
+        <p>질문, 결과 유형, 분류 기준을 확인하는 화면입니다. 이 앱은 서버가 없어서 <strong>수강생 응답을 모으거나 조회하지 않습니다.</strong> 참가자 수와 유형별 통계도 제공하지 않습니다.</p>
+        <a class="btn btn-outline" href="./">수강생 화면으로 이동</a>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="미리보기 항목">
+        <button type="button" role="tab" class="tab" data-tab="questions" aria-selected="true">질문 15개</button>
+        <button type="button" role="tab" class="tab" data-tab="types" aria-selected="false">결과 유형 5개</button>
+        <button type="button" role="tab" class="tab" data-tab="rules" aria-selected="false">분류 기준</button>
+      </nav>
+      <div class="tab-panel" id="tab-questions" role="tabpanel"></div>
+      <div class="tab-panel" id="tab-types" role="tabpanel" hidden></div>
+      <div class="tab-panel" id="tab-rules" role="tabpanel" hidden></div>
+    </section>
+
+    <!-- 이미지 저장 미리보기 (휴대폰용) -->
+    <div class="modal" id="save-modal" hidden role="dialog" aria-modal="true" aria-labelledby="save-modal-title">
+      <div class="modal-box">
+        <h2 id="save-modal-title">결과 이미지</h2>
+        <p class="modal-hint">이미지를 <strong>길게 눌러</strong> '사진에 저장' 또는 '이미지 저장'을 선택하세요.</p>
+        <img id="save-preview" alt="나의 돈관리 스타일 결과 이미지">
+        <div class="modal-actions">
+          <button type="button" class="btn btn-primary btn-block" id="btn-share" hidden>공유 · 사진에 저장</button>
+          <a class="btn btn-outline btn-block" id="btn-download" download="my-money-style.png">파일로 다운로드</a>
+          <button type="button" class="btn-text" id="btn-modal-close">닫기</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  </div>
+
+  <noscript><p style="padding:24px">이 진단은 JavaScript가 필요합니다. 브라우저 설정에서 JavaScript를 켜 주세요.</p></noscript>
+
+  <!-- 순서 중요: 데이터 → 로직 → 결과 문구 → 이미지 → 화면 -->
+  <script src="questions.js"></script>
+  <script src="scoring.js"></script>
+  <script src="results.js"></script>
+  <script src="card.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

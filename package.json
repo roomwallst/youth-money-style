@@ -1,0 +1,17 @@
+{
+  "name": "youth-money-style",
+  "version": "1.2.0",
+  "description": "방구석월가 청년 금융교육: 15문항 자기진단 + 유형별 자산군 학습 가이드",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "node scripts/serve.js",
+    "test": "node --test tests/scoring.test.js",
+    "test:e2e": "node scripts/e2e.js",
+    "simulate": "node scripts/simulate.js",
+    "cases": "node scripts/cases.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
